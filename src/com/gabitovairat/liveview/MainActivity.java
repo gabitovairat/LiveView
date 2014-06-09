@@ -25,6 +25,7 @@ public class MainActivity extends Activity
   private ScaleGestureDetector detector;
   
   LinearLayout mainView; 
+  RelativeLayout hostView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
@@ -34,7 +35,7 @@ public class MainActivity extends Activity
     setContentView(R.layout.activity_main);
     
     mainView = (LinearLayout) findViewById(R.id.mainView);
-
+    hostView = (RelativeLayout) findViewById(R.id.hostView);
     // setContentView(new ZoomView(this));
   }
   
@@ -44,6 +45,13 @@ public class MainActivity extends Activity
     {
       OriginalX = mainView.getWidth();
       OriginalY = mainView.getHeight();
+
+      float pixelsY = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (OriginalY*5), getResources().getDisplayMetrics());
+      float pixelsX = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (OriginalX*5), getResources().getDisplayMetrics());
+      android.widget.FrameLayout.LayoutParams params = (android.widget.FrameLayout.LayoutParams) hostView.getLayoutParams();
+      params.height = (int) pixelsY;
+      params.width  = (int) pixelsX;
+      hostView.setLayoutParams(params);
     }
 
     float pixelsY = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (OriginalY*scaleFactor), getResources().getDisplayMetrics());
