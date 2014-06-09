@@ -45,16 +45,6 @@ public class MainActivity extends Activity
       OriginalX = mainView.getWidth();
       OriginalY = mainView.getHeight();
     }
-    //mainView.setPivotX(0);
-    //mainView.setPivotY(0);
-    //RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mainView.getLayoutParams();
-    //params.width = (int) (OriginalX*scaleFactor);
-    //params.height = (int) (OriginalY*scaleFactor);
-   
-    //android.view.ViewGroup.LayoutParams params = mainView.getLayoutParams();
-    //params.height = (int) (OriginalY*scaleFactor);
-    //params.width = (int) (OriginalX*scaleFactor);
-    //mainView.requestLayout();
 
     float pixelsY = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (OriginalY*scaleFactor), getResources().getDisplayMetrics());
     float pixelsX = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (OriginalX*scaleFactor), getResources().getDisplayMetrics());
@@ -62,23 +52,6 @@ public class MainActivity extends Activity
     params.height = (int) pixelsY;
     params.width  = (int) pixelsX;
     mainView.setLayoutParams(params);
-    
-    //mainView.setLayoutParams(new RelativeLayout.LayoutParams((int) (OriginalX*scaleFactor), (int) (OriginalY*scaleFactor)));
-    //mainView.setLayoutParams(params);
-    //mainView.setScaleX(scaleFactor);
-    //mainView.setScaleY(scaleFactor);
-    /*mainView.post(new Runnable()
-    {
-        @Override
-        public void run()
-        {
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mainView.getLayoutParams();
-            params.width = (int) (OriginalX*scaleFactor);
-            params.height = (int) (OriginalY*scaleFactor);
-            mainView.setLayoutParams(params);
-        }
-    });
-    */
   }
   
   @Override
