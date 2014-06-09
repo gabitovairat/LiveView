@@ -1,0 +1,51 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="helpButtonHeight">30dp</dimen>
+    <dimen name="AlienDialogTextSize">20sp</dimen>
+    <dimen name="helpViewStartButtonTextSize">14sp</dimen>
+    <dimen name="VictoryCaptionTextSize">30sp</dimen>
+    <dimen name="VictoryButtonTextSize">20sp</dimen>
+    <dimen name="ButtonsCornerRadius">5.0dip</dimen>
+    <dimen name="CloseButtonSize">40.0dip</dimen>
+    <dimen name="HelpCaptionTextSize">18sp</dimen>
+    <dimen name="HelpDescTextSize">12sp</dimen>
+    <dimen name="HelpPageIndicatorRadius">4dp</dimen>
+    <dimen name="HelpPageIndicatorPadding">16dp</dimen>
+    <dimen name="ScreenShotButtonSize">60.0dip</dimen>
+    <dimen name="SocialShareButtonSize">40.0dip</dimen>
+    
+    <dimen name="BottomPanelButtonSize">25.0dip</dimen>
+    <dimen name="BottomPanelPadding">5.0dip</dimen>
+    <dimen name="BottomPanelFontSize">10.0dip</dimen>
+    <dimen name="BottomPanelPaddingSize">1.0dip</dimen>
+    
+    <dimen name="BackButtonSize">14.0dip</dimen>
+    
+    <dimen name="TopPanelSpinnerFontSize">17.0dip</dimen>
+    <dimen name="TopPannelSpinDropDownWide">400dp</dimen>
+    <dimen name="TopPannelFavoriteButtonWide">140dp</dimen>
+    
+    <dimen name="TopPannelHigh">40dp</dimen>
+    <dimen name="CatalogDetailsNameFontSize">18sp</dimen>
+        
+    <dimen name="ShopCatalogTCNameFontSize">18dp</dimen>
+    <dimen name="ShopCatalogShopNameFontSize">14dp</dimen>
+    <dimen name="ShopCatalogAddressFontSize">12dp</dimen>  
+    <dimen name="NewsCatalogItemImageSize">110dp</dimen>
+    <dimen name="SimpleCommonPadding">10dp</dimen>
+    <dimen name="SimpleCommonPadding2x">20dp</dimen>
+    <dimen name="SimpleListsPadding">5dp</dimen>
+       
+    <dimen name="BrendAboutTextSize">16dp</dimen>
+        
+    <dimen name="CatalogSpinerDropDownPadding">10dp</dimen>
+        
+    <dimen name="MainCatalogItemCaptionFontSize">12dp</dimen> 
+    
+    <dimen name="SplashImageTopPadding">0dp</dimen>
+    
+    <dimen name="EmptyListStubCaptionTextSize">27dp</dimen> 
+</resources>
