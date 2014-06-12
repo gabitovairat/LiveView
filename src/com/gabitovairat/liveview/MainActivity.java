@@ -19,6 +19,8 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -95,21 +97,22 @@ public class MainActivity extends Activity
   
   Bitmap createCacheBitmap(int width, int heigh, int elementCount, int resForDraw)
   {
-    Drawable strokeDrawable = getResources().getDrawable(R.drawable.week_draw);
-    //Bitmap bmp1 = BitmapFactory.decodeResource(getResources(), R.drawable.bmp1);
-    //Canvas canvas = new Canvas();
-    //strokeDrawable.draw(canvas);
-    //int width = 100;//bmp1.getWidth() + STROKE_WIDTH * 2;
-    //int heigh = 100;//bmp1.getHeight() + STROKE_WIDTH * 2;
+    float oneElementWidth = (float)width/(float)elementCount;
+    Bitmap oneElementWidthBitmap = Bitmap.createBitmap((int) oneElementWidth, heigh, Bitmap.Config.ARGB_8888);
+    Canvas oneElementWidthCanvas = new Canvas(oneElementWidthBitmap);
     
-    final int STROKE_WIDTH = 3;
+    Drawable strokeDrawable = getResources().getDrawable(resForDraw);
+    strokeDrawable.setBounds(0, 0, oneElementWidthCanvas.getWidth(), oneElementWidthCanvas.getHeight());
+    strokeDrawable.draw(oneElementWidthCanvas);
+    
     Bitmap copy = Bitmap.createBitmap(width, heigh, Bitmap.Config.ARGB_8888);
     Canvas canvas = new Canvas(copy);
-    strokeDrawable.setBounds(0, 0, copy.getWidth(), copy.getHeight());
-    strokeDrawable.draw(canvas);
-    //canvas.drawBitmap(bmp1, STROKE_WIDTH, STROKE_WIDTH, null);
-    //bmp1.recycle();
-    //bmp1 = copy;
+    
+    for (int i = 0; i != elementCount; ++i)
+    {
+      canvas.drawBitmap(oneElementWidthBitmap, oneElementWidth*i, 0, null);
+    }
+    
     return copy;
   }
   
@@ -141,8 +144,14 @@ public class MainActivity extends Activity
         ladderFLParams.weight = 1f;
         ladderFL.setLayoutParams(ladderFLParams);
         
-        LinearLayout newRow = createLinearLayout((float)colomnCount,R.drawable.past_week_draw);
-        ladderFL.addView(newRow);
+        ImageView imageView = new ImageView(this);
+        imageView.setAdjustViewBounds(true);
+        imageView.setScaleType(ScaleType.FIT_XY);
+        FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+        imageView.setLayoutParams(imageParams);
+        imageView.setImageBitmap(beforeCurrentRow);
+
+        ladderFL.addView(imageView);
         mainView.addView(ladderFL);
       }
       else if (iYear > currentYear)
@@ -152,8 +161,14 @@ public class MainActivity extends Activity
         ladderFLParams.weight = 1f;
         ladderFL.setLayoutParams(ladderFLParams);
         
-        LinearLayout newRow = createLinearLayout((float)colomnCount,R.drawable.feature_week_draw);
-        ladderFL.addView(newRow);
+        ImageView imageView = new ImageView(this);
+        imageView.setAdjustViewBounds(true);
+        imageView.setScaleType(ScaleType.FIT_XY);
+        FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+        imageView.setLayoutParams(imageParams);
+        imageView.setImageBitmap(afterCurrentRow);
+
+        ladderFL.addView(imageView);
         mainView.addView(ladderFL);
       }
       else
