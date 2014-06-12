@@ -4,9 +4,15 @@ import com.gabitovairat.components.ZoomView;
 
 import android.app.Activity;
 import android.app.ActionBar.LayoutParams;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -39,7 +45,14 @@ public class MainActivity extends Activity
     mainView = (LinearLayout) findViewById(R.id.mainView);
     hostView = (RelativeLayout) findViewById(R.id.hostView);
     
-    createWeekElements();
+    
+    Display display = getWindowManager().getDefaultDisplay();
+    
+    //Point dispSize = new Point();
+    DisplayMetrics outMetrics = new DisplayMetrics();
+    display.getMetrics(outMetrics);
+    
+    createWeekElements(outMetrics.widthPixels, outMetrics.heightPixels);
     // setContentView(new ZoomView(this));
   }
   
@@ -80,8 +93,28 @@ public class MainActivity extends Activity
     return ladderFL;
   }
   
+  Bitmap createCacheBitmap(int width, int heigh, int elementCount, int resForDraw)
+  {
+    Drawable strokeDrawable = getResources().getDrawable(R.drawable.week_draw);
+    //Bitmap bmp1 = BitmapFactory.decodeResource(getResources(), R.drawable.bmp1);
+    //Canvas canvas = new Canvas();
+    //strokeDrawable.draw(canvas);
+    //int width = 100;//bmp1.getWidth() + STROKE_WIDTH * 2;
+    //int heigh = 100;//bmp1.getHeight() + STROKE_WIDTH * 2;
+    
+    final int STROKE_WIDTH = 3;
+    Bitmap copy = Bitmap.createBitmap(width, heigh, Bitmap.Config.ARGB_8888);
+    Canvas canvas = new Canvas(copy);
+    strokeDrawable.setBounds(0, 0, copy.getWidth(), copy.getHeight());
+    strokeDrawable.draw(canvas);
+    //canvas.drawBitmap(bmp1, STROKE_WIDTH, STROKE_WIDTH, null);
+    //bmp1.recycle();
+    //bmp1 = copy;
+    return copy;
+  }
   
-  void createWeekElements()
+  
+  void createWeekElements(int sceenSizeX, int sceenSizeY)
   {
     //day in year 365-366
     float originalWeekWidth = 2;
@@ -89,24 +122,70 @@ public class MainActivity extends Activity
     //row 52
     int rowCount = 90;//ear in live
     //colomn
-    int colomnCount = 366/7;//week in year
+    int colomnCount = 52;//366/7;//week in year
+    
+    int currentYear = 33;
+    int currentWeek = 20;
+    
     mainView.setWeightSum(rowCount);
+    
+    Bitmap beforeCurrentRow = createCacheBitmap(sceenSizeX, sceenSizeY/rowCount, colomnCount, R.drawable.past_week_draw);
+    Bitmap afterCurrentRow = createCacheBitmap(sceenSizeX, sceenSizeY/rowCount, colomnCount, R.drawable.feature_week_draw);
     
     for (int iYear = 0; iYear != rowCount; ++iYear)
     {
-      FrameLayout ladderFL = new FrameLayout(this);
-      LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
-      ladderFLParams.weight = 1f;
-      ladderFL.setLayoutParams(ladderFLParams);
-      
-      LinearLayout newRow = createLinearLayout((float)colomnCount,R.drawable.week_draw);
-      for (int iWeek = 0; iWeek != colomnCount; ++iWeek)
+      if (iYear < currentYear)
       {
-        FrameLayout weekL = createLinearLayout(originalWeekWidth, originalWeekHeigh, R.drawable.week_draw);
-        newRow.addView(weekL);
+        FrameLayout ladderFL = new FrameLayout(this);
+        LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
+        ladderFLParams.weight = 1f;
+        ladderFL.setLayoutParams(ladderFLParams);
+        
+        LinearLayout newRow = createLinearLayout((float)colomnCount,R.drawable.past_week_draw);
+        ladderFL.addView(newRow);
+        mainView.addView(ladderFL);
       }
-      ladderFL.addView(newRow);
-      mainView.addView(ladderFL);
+      else if (iYear > currentYear)
+      {
+        FrameLayout ladderFL = new FrameLayout(this);
+        LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
+        ladderFLParams.weight = 1f;
+        ladderFL.setLayoutParams(ladderFLParams);
+        
+        LinearLayout newRow = createLinearLayout((float)colomnCount,R.drawable.feature_week_draw);
+        ladderFL.addView(newRow);
+        mainView.addView(ladderFL);
+      }
+      else
+      {
+        FrameLayout ladderFL = new FrameLayout(this);
+        LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
+        ladderFLParams.weight = 1f;
+        ladderFL.setLayoutParams(ladderFLParams);
+        
+        LinearLayout newRow = createLinearLayout((float)colomnCount,R.drawable.week_draw);
+        for (int iWeek = 0; iWeek != colomnCount; ++iWeek)
+        {
+          int WeekDrawable = 0;
+          if (iWeek < currentWeek)
+          {
+            WeekDrawable = R.drawable.past_week_draw;
+          }
+          else if (iWeek > currentWeek)
+          {
+            WeekDrawable = R.drawable.feature_week_draw;
+          }
+          else
+          {
+            WeekDrawable = R.drawable.week_draw;
+          }
+          
+          FrameLayout weekL = createLinearLayout(originalWeekWidth, originalWeekHeigh, WeekDrawable);
+          newRow.addView(weekL);
+        }
+        ladderFL.addView(newRow);
+        mainView.addView(ladderFL);
+      }
     }
   }
   

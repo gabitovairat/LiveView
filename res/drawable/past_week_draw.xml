@@ -3,18 +3,18 @@
 
     <item android:state_pressed="true"><layer-list>
             <item><shape>
-                    <solid android:color="@color/white_color" />
+                    <solid android:color="@color/grey_color_27" />
 
-                    <stroke android:width="1px" android:color="@color/black_simple" />
+                    <stroke android:width="1px" android:color="@color/red_button_color" />
 
                     <corners android:radius="@dimen/ButtonsCornerRadius" />
                 </shape></item>
         </layer-list></item>
     <item><layer-list>
             <item><shape>
-                    <solid android:color="@color/white_color" />
+                    <solid android:color="@color/grey_color_27" />
 
-                    <stroke android:width="1px" android:color="@color/black_simple" />
+                    <stroke android:width="1px" android:color="@color/red_button_color" />
 
                     <corners android:radius="@dimen/ButtonsCornerRadius" />
                 </shape></item>

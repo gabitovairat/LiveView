@@ -5,7 +5,7 @@
             <item><shape>
                     <solid android:color="@color/white_color" />
 
-                    <stroke android:width="1px" android:color="@color/black_simple" />
+                    <stroke android:width="1px" android:color="@color/green_button_color" />
 
                     <corners android:radius="@dimen/ButtonsCornerRadius" />
                 </shape></item>
@@ -14,7 +14,7 @@
             <item><shape>
                     <solid android:color="@color/white_color" />
 
-                    <stroke android:width="1px" android:color="@color/black_simple" />
+                    <stroke android:width="1px" android:color="@color/green_button_color" />
 
                     <corners android:radius="@dimen/ButtonsCornerRadius" />
                 </shape></item>
