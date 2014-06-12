@@ -95,11 +95,23 @@ public class MainActivity extends Activity
     return ladderFL;
   }
   
-  Bitmap createCacheBitmap(int width, int heigh, int elementCount, int resForDraw)
+  Bitmap createCacheBitmapForRow(int width, int heigh, int elementCount, int resForDrawBefore, int resForDrawAfter, int resForDraw, int currentElement)
   {
     float oneElementWidth = (float)width/(float)elementCount;
+    Bitmap oneElementWidthBitmapBefore = Bitmap.createBitmap((int) oneElementWidth, heigh, Bitmap.Config.ARGB_8888);
+    Canvas oneElementWidthCanvasBefore = new Canvas(oneElementWidthBitmapBefore);
+    Bitmap oneElementWidthBitmapAfter = Bitmap.createBitmap((int) oneElementWidth, heigh, Bitmap.Config.ARGB_8888);
+    Canvas oneElementWidthCanvasAfter = new Canvas(oneElementWidthBitmapAfter);
     Bitmap oneElementWidthBitmap = Bitmap.createBitmap((int) oneElementWidth, heigh, Bitmap.Config.ARGB_8888);
     Canvas oneElementWidthCanvas = new Canvas(oneElementWidthBitmap);
+    
+    Drawable strokeDrawableBefore = getResources().getDrawable(resForDrawBefore);
+    strokeDrawableBefore.setBounds(0, 0, oneElementWidthBitmapBefore.getWidth(), oneElementWidthBitmapBefore.getHeight());
+    strokeDrawableBefore.draw(oneElementWidthCanvasBefore);
+    
+    Drawable strokeDrawableAfter = getResources().getDrawable(resForDrawAfter);
+    strokeDrawableAfter.setBounds(0, 0, oneElementWidthCanvasAfter.getWidth(), oneElementWidthCanvasAfter.getHeight());
+    strokeDrawableAfter.draw(oneElementWidthCanvasAfter);
     
     Drawable strokeDrawable = getResources().getDrawable(resForDraw);
     strokeDrawable.setBounds(0, 0, oneElementWidthCanvas.getWidth(), oneElementWidthCanvas.getHeight());
@@ -110,12 +122,22 @@ public class MainActivity extends Activity
     
     for (int i = 0; i != elementCount; ++i)
     {
-      canvas.drawBitmap(oneElementWidthBitmap, oneElementWidth*i, 0, null);
+      if (i < currentElement)
+      {
+        canvas.drawBitmap(oneElementWidthBitmapBefore, oneElementWidth*i, 0, null);
+      }
+      else if (i > currentElement)
+      {
+        canvas.drawBitmap(oneElementWidthBitmapAfter, oneElementWidth*i, 0, null);
+      }
+      else
+      {
+        canvas.drawBitmap(oneElementWidthBitmap, oneElementWidth*i, 0, null);
+      }
     }
     
     return copy;
   }
-  
   
   void createWeekElements(int sceenSizeX, int sceenSizeY)
   {
@@ -132,9 +154,10 @@ public class MainActivity extends Activity
     
     mainView.setWeightSum(rowCount);
     
-    Bitmap beforeCurrentRow = createCacheBitmap(sceenSizeX, sceenSizeY/rowCount, colomnCount, R.drawable.past_week_draw);
-    Bitmap afterCurrentRow = createCacheBitmap(sceenSizeX, sceenSizeY/rowCount, colomnCount, R.drawable.feature_week_draw);
-    
+    Bitmap beforeCurrentRow = createCacheBitmapForRow(sceenSizeX, sceenSizeY/rowCount, colomnCount, R.drawable.past_week_draw, R.drawable.feature_week_draw, R.drawable.week_draw, 10000);
+    Bitmap afterCurrentRow  = createCacheBitmapForRow(sceenSizeX, sceenSizeY/rowCount, colomnCount, R.drawable.past_week_draw, R.drawable.feature_week_draw, R.drawable.week_draw, -10000);
+    Bitmap CurrentRow  = createCacheBitmapForRow(sceenSizeX, sceenSizeY/rowCount, colomnCount, R.drawable.past_week_draw, R.drawable.feature_week_draw, R.drawable.week_draw, currentWeek);
+
     for (int iYear = 0; iYear != rowCount; ++iYear)
     {
       if (iYear < currentYear)
@@ -167,6 +190,23 @@ public class MainActivity extends Activity
         FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         imageView.setLayoutParams(imageParams);
         imageView.setImageBitmap(afterCurrentRow);
+
+        ladderFL.addView(imageView);
+        mainView.addView(ladderFL);
+      }
+      else if (iYear == currentYear)
+      {
+        FrameLayout ladderFL = new FrameLayout(this);
+        LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
+        ladderFLParams.weight = 1f;
+        ladderFL.setLayoutParams(ladderFLParams);
+        
+        ImageView imageView = new ImageView(this);
+        imageView.setAdjustViewBounds(true);
+        imageView.setScaleType(ScaleType.FIT_XY);
+        FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+        imageView.setLayoutParams(imageParams);
+        imageView.setImageBitmap(CurrentRow);
 
         ladderFL.addView(imageView);
         mainView.addView(ladderFL);
