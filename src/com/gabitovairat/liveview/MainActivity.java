@@ -68,17 +68,27 @@ public class MainActivity extends Activity
     return LL;
   }
   
-  LinearLayout createLinearLayout(float width, float heigh, int ResourceForDraw)
+  FrameLayout createLinearLayout(float width, float heigh, int ResourceForDraw)
   {
+    FrameLayout ladderFL = new FrameLayout(this);
+    //ladderFL.setBackgroundColor(Color.GREEN);
+    ladderFL.setBackgroundResource(ResourceForDraw);
+    
+    LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
+    ladderFLParams.weight = 1f;
+    ladderFL.setLayoutParams(ladderFLParams);
+    /*
     LinearLayout LL = new LinearLayout(this);
-    //LL.setBackgroundColor(Color.CYAN);
-    LL.setBackgroundResource(ResourceForDraw);
+    LL.setBackgroundColor(Color.CYAN);
+    //LL.setBackgroundResource(ResourceForDraw);
     LL.setOrientation(LinearLayout.HORIZONTAL);
 
     //LayoutParams LLParams = new LayoutParams(sizeInDim((int) (width*scaleFactor)), sizeInDim((int) (heigh*scaleFactor)), 1);
     LayoutParams LLParams = new LayoutParams(0, LayoutParams.MATCH_PARENT, 1);
     LL.setLayoutParams(LLParams);
     return LL;
+    */
+    return ladderFL;
   }
   
   
@@ -95,12 +105,12 @@ public class MainActivity extends Activity
     for (int iYear = 0; iYear != rowCount; ++iYear)
     {
       LinearLayout newRow = createLinearLayout((float)colomnCount,R.drawable.week_draw);
-      mainView.addView(newRow);
       for (int iWeek = 0; iWeek != colomnCount; ++iWeek)
       {
-        LinearLayout weekL = createLinearLayout(originalWeekWidth, originalWeekHeigh, R.drawable.week_draw);
+        FrameLayout weekL = createLinearLayout(originalWeekWidth, originalWeekHeigh, R.drawable.week_draw);
         newRow.addView(weekL);
       }
+      mainView.addView(newRow);
     }
   }
   
