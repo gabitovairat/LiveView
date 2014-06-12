@@ -2,6 +2,7 @@ package com.gabitovairat.liveview;
 
 import com.gabitovairat.components.ZoomView;
 
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.app.ActionBar.LayoutParams;
 import android.graphics.Bitmap;
@@ -26,7 +27,7 @@ import android.widget.RelativeLayout;
 
 public class MainActivity extends Activity
 {
-  private static float         MIN_ZOOM    = 0.1f;
+  private static float         MIN_ZOOM    = 1.0f;
   private static float         MAX_ZOOM    = 5f;
   int OriginalX;
   int OriginalY;
@@ -264,6 +265,11 @@ public class MainActivity extends Activity
     android.widget.RelativeLayout.LayoutParams params = (android.widget.RelativeLayout.LayoutParams) mainView.getLayoutParams();
     params.height = (int) pixelsY;
     params.width  = (int) pixelsX;
+    
+    int xOffset = -(int) (OriginalX - OriginalX*scaleFactor);
+    int yOffset = -(int) (OriginalY - OriginalY*scaleFactor);
+    
+    params.setMargins(-1*xOffset, -1*yOffset, xOffset, yOffset);
     mainView.setLayoutParams(params);
   }
   
