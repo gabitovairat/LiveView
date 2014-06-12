@@ -77,17 +77,6 @@ public class MainActivity extends Activity
     LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
     ladderFLParams.weight = 1f;
     ladderFL.setLayoutParams(ladderFLParams);
-    /*
-    LinearLayout LL = new LinearLayout(this);
-    LL.setBackgroundColor(Color.CYAN);
-    //LL.setBackgroundResource(ResourceForDraw);
-    LL.setOrientation(LinearLayout.HORIZONTAL);
-
-    //LayoutParams LLParams = new LayoutParams(sizeInDim((int) (width*scaleFactor)), sizeInDim((int) (heigh*scaleFactor)), 1);
-    LayoutParams LLParams = new LayoutParams(0, LayoutParams.MATCH_PARENT, 1);
-    LL.setLayoutParams(LLParams);
-    return LL;
-    */
     return ladderFL;
   }
   
@@ -98,19 +87,26 @@ public class MainActivity extends Activity
     float originalWeekWidth = 2;
     float originalWeekHeigh = 4;
     //row 52
-    int rowCount = 10;//ear in live
+    int rowCount = 90;//ear in live
     //colomn
     int colomnCount = 366/7;//week in year
+    mainView.setWeightSum(rowCount);
     
     for (int iYear = 0; iYear != rowCount; ++iYear)
     {
+      FrameLayout ladderFL = new FrameLayout(this);
+      LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
+      ladderFLParams.weight = 1f;
+      ladderFL.setLayoutParams(ladderFLParams);
+      
       LinearLayout newRow = createLinearLayout((float)colomnCount,R.drawable.week_draw);
       for (int iWeek = 0; iWeek != colomnCount; ++iWeek)
       {
         FrameLayout weekL = createLinearLayout(originalWeekWidth, originalWeekHeigh, R.drawable.week_draw);
         newRow.addView(weekL);
       }
-      mainView.addView(newRow);
+      ladderFL.addView(newRow);
+      mainView.addView(ladderFL);
     }
   }
   
