@@ -13,6 +13,62 @@
         android:background="@color/white_color"
         android:orientation="vertical"
         android:weightSum="1000" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/weekContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/mainView"
+        android:layout_alignLeft="@id/mainView"
+        android:layout_alignRight="@id/mainView"
+        android:layout_alignTop="@id/mainView"
+        android:background="@color/black_overlay"
+        android:orientation="vertical"
+        android:weightSum="1000" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="40" >
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="920"
+            android:weightSum="1000" >
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="40" >
+
+            </FrameLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="920"
+                android:background="@color/green_button_color" >
+
+            </RelativeLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_weight="400"
+                android:layout_height="match_parent" >
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="400" >
+
+        </FrameLayout>
 
     </LinearLayout>
 

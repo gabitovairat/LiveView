@@ -45,6 +45,7 @@ public class MainActivity extends Activity
 
   LinearLayout                 mainView;
   RelativeLayout               hostView;
+  LinearLayout                 weekContainerView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
@@ -55,6 +56,7 @@ public class MainActivity extends Activity
 
     mainView = (LinearLayout) findViewById(R.id.mainView);
     hostView = (RelativeLayout) findViewById(R.id.hostView);
+    weekContainerView = (LinearLayout) findViewById(R.id.weekContainer);
 
     Display display = getWindowManager().getDefaultDisplay();
 
@@ -315,6 +317,7 @@ public class MainActivity extends Activity
 
     params.setMargins(-1 * xOffset, -1 * yOffset, xOffset, yOffset);
     mainView.setLayoutParams(params);
+    weekContainerView.setLayoutParams(params);
   }
 
   float getViewPartOffsetX()
