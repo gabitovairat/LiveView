@@ -146,20 +146,20 @@ public class MainActivity extends Activity
     float originalWeekWidth = 2;
     float originalWeekHeigh = 4;
     //row 52
-    int rowCount = 90;//ear in live
+    int yearCount = 90;//ear in live
     //colomn
     int colomnCount = 52;//366/7;//week in year
     
     int currentYear = 33;
     int currentWeek = 20;
     
-    mainView.setWeightSum(rowCount);
+    mainView.setWeightSum(yearCount);
     
-    Bitmap beforeCurrentRow = createCacheBitmapForRow(sceenSizeX, sceenSizeY/rowCount, colomnCount, R.drawable.past_week_draw, R.drawable.feature_week_draw, R.drawable.week_draw, 10000);
-    Bitmap afterCurrentRow  = createCacheBitmapForRow(sceenSizeX, sceenSizeY/rowCount, colomnCount, R.drawable.past_week_draw, R.drawable.feature_week_draw, R.drawable.week_draw, -10000);
-    Bitmap CurrentRow  = createCacheBitmapForRow(sceenSizeX, sceenSizeY/rowCount, colomnCount, R.drawable.past_week_draw, R.drawable.feature_week_draw, R.drawable.week_draw, currentWeek);
+    Bitmap beforeCurrentRow = createCacheBitmapForRow(sceenSizeX, sceenSizeY/yearCount, colomnCount, R.drawable.past_week_draw, R.drawable.feature_week_draw, R.drawable.week_draw, 10000);
+    Bitmap afterCurrentRow  = createCacheBitmapForRow(sceenSizeX, sceenSizeY/yearCount, colomnCount, R.drawable.past_week_draw, R.drawable.feature_week_draw, R.drawable.week_draw, -10000);
+    Bitmap CurrentRow  = createCacheBitmapForRow(sceenSizeX, sceenSizeY/yearCount, colomnCount, R.drawable.past_week_draw, R.drawable.feature_week_draw, R.drawable.week_draw, currentWeek);
 
-    for (int iYear = 0; iYear != rowCount; ++iYear)
+    for (int iYear = 0; iYear != yearCount; ++iYear)
     {
       if (iYear < currentYear)
       {
