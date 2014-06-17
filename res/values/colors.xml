@@ -18,4 +18,11 @@
     
     <color name="news_body_gray">#ff444444</color>
     <color name="grey_color_27">#ff272727</color>
+    
+    
+    <color name="past_solid_color">#ffD1D3D4</color>
+    <color name="past_stroke">#ff786E5A</color>
+    
+    <color name="feature_solid_color">#ffFFFFFF</color>
+    <color name="feature_stroke">#ff000000</color>
 </resources>

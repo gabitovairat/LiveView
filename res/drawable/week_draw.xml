@@ -3,20 +3,20 @@
 
     <item android:state_pressed="true"><layer-list>
             <item><shape>
-                    <solid android:color="@color/white_color" />
+                    <solid android:color="@color/red_button_color" />
 
-                    <stroke android:width="1px" android:color="@color/black_simple" />
-
-                    <corners android:radius="@dimen/ButtonsCornerRadius" />
+                    <stroke android:width="1px" android:color="@color/past_stroke" />
+<!--                     <corners android:radius="@dimen/ButtonsCornerRadius" /> -->
+                    <margin android:bottom="2px" android:left="11px" android:right="1px" android:top="1px" />
                 </shape></item>
         </layer-list></item>
     <item><layer-list>
             <item><shape>
-                    <solid android:color="@color/white_color" />
+                    <solid android:color="@color/red_button_color" />
 
-                    <stroke android:width="1px" android:color="@color/black_simple" />
-
-                    <corners android:radius="@dimen/ButtonsCornerRadius" />
+                    <stroke android:width="1px" android:color="@color/past_stroke" />
+<!--                     <corners android:radius="@dimen/ButtonsCornerRadius" /> -->
+                    <margin android:bottom="1px" android:left="1px" android:right="1px" android:top="1px" />
                 </shape></item>
         </layer-list></item>
 
