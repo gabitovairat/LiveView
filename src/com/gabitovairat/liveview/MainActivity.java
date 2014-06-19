@@ -40,16 +40,19 @@ public class MainActivity extends Activity
   int                          yearCount   = 90;  // ear in live
   int                          colomnCount = 52;  // 366/7;//week in year
 
-  int                          currentYear = 33;
+  int                          currentYear = 33; // already lived years
   int                          currentWeek = 4;
 
   LinearLayout                 mainView;
   RelativeLayout               hostView;
+  
   LinearLayout                 weekContainerView;
-
   FrameLayout                  beforeYearFrame;
   FrameLayout                  beforeWeekFrame;
-
+  
+  LinearLayout                 beforeWeekConteiner;
+  RelativeLayout               weekFrame;
+  
   @Override
   protected void onCreate(Bundle savedInstanceState)
   {
@@ -62,6 +65,9 @@ public class MainActivity extends Activity
     weekContainerView = (LinearLayout) findViewById(R.id.weekContainer);
     beforeYearFrame = (FrameLayout) findViewById(R.id.beforeYearFrame);
     beforeWeekFrame = (FrameLayout) findViewById(R.id.beforeWeekFrame);
+    
+    beforeWeekConteiner = (LinearLayout) findViewById(R.id.beforeWeekConteiner);
+    weekFrame = (RelativeLayout) findViewById(R.id.weekFrame);
 
     Display display = getWindowManager().getDefaultDisplay();
 
@@ -70,6 +76,7 @@ public class MainActivity extends Activity
     display.getMetrics(outMetrics);
 
     createWeekElements(outMetrics.widthPixels, outMetrics.heightPixels);
+    placeWeekContainer();
     // setContentView(new ZoomView(this));
   }
 
@@ -170,6 +177,51 @@ public class MainActivity extends Activity
 
     return copy;
   }
+  
+  void placeWeekContainer()
+  {
+    weekContainerView.setWeightSum(yearCount);
+    {
+      FrameLayout ladderFL = new FrameLayout(this);
+      LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(
+          LinearLayout.LayoutParams.MATCH_PARENT,
+          0);
+      ladderFLParams.weight = currentYear-1;
+      
+      beforeYearFrame.setLayoutParams(ladderFLParams);
+    }
+    
+    {
+      FrameLayout ladderFL = new FrameLayout(this);
+      LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(
+          LinearLayout.LayoutParams.MATCH_PARENT,
+          0);
+      ladderFLParams.weight = 1;
+      
+      beforeWeekConteiner.setLayoutParams(ladderFLParams);
+    }
+    
+    beforeWeekConteiner.setWeightSum(colomnCount);
+    {
+      FrameLayout ladderFL = new FrameLayout(this);
+      LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(
+          0,
+          LinearLayout.LayoutParams.MATCH_PARENT);
+      ladderFLParams.weight = currentWeek;
+      
+      beforeWeekFrame.setLayoutParams(ladderFLParams);
+    }
+
+    {
+      FrameLayout ladderFL = new FrameLayout(this);
+      LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(
+          0,
+          LinearLayout.LayoutParams.MATCH_PARENT);
+      ladderFLParams.weight = 1;
+      
+      weekFrame.setLayoutParams(ladderFLParams);
+    }
+  }
 
   void createWeekElements(int sceenSizeX, int sceenSizeY)
   {
@@ -188,7 +240,7 @@ public class MainActivity extends Activity
     Bitmap CurrentRow = createCacheBitmapForRow(sceenSizeX, sceenSizeY
         / yearCount, colomnCount, R.drawable.past_week_draw,
         R.drawable.feature_week_draw, R.drawable.week_draw, currentWeek);
-
+    
     LinearLayout topFrame = new LinearLayout(this);
     topFrame.setOrientation(LinearLayout.VERTICAL);
     float topWeigthSum = currentYear-1;
@@ -382,7 +434,7 @@ public class MainActivity extends Activity
 
   float getViewPartOffsetY()
   {
-    return ((float) currentYear) / (float) (yearCount - 1);
+    return ((float) currentYear-1.f) / (float) (yearCount-1.f);
   }
 
   @Override
