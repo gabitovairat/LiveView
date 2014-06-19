@@ -31,21 +31,24 @@ public class MainActivity extends Activity
 {
   private static float         MIN_ZOOM    = 1.0f;
   private static float         MAX_ZOOM    = 35f;
-  int                          OriginalX;
-  int                          OriginalY;
+  float                        OriginalX;
+  float                        OriginalY;
 
   private static float         scaleFactor = 1.f;
   private ScaleGestureDetector detector;
-  
-  int yearCount   = 90; // ear in live
-  int colomnCount = 52; // 366/7;//week in year
 
-  int currentYear = 33;
-  int currentWeek = 4;
+  int                          yearCount   = 90;  // ear in live
+  int                          colomnCount = 52;  // 366/7;//week in year
+
+  int                          currentYear = 33;
+  int                          currentWeek = 4;
 
   LinearLayout                 mainView;
   RelativeLayout               hostView;
   LinearLayout                 weekContainerView;
+
+  FrameLayout                  beforeYearFrame;
+  FrameLayout                  beforeWeekFrame;
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
@@ -57,6 +60,8 @@ public class MainActivity extends Activity
     mainView = (LinearLayout) findViewById(R.id.mainView);
     hostView = (RelativeLayout) findViewById(R.id.hostView);
     weekContainerView = (LinearLayout) findViewById(R.id.weekContainer);
+    beforeYearFrame = (FrameLayout) findViewById(R.id.beforeYearFrame);
+    beforeWeekFrame = (FrameLayout) findViewById(R.id.beforeWeekFrame);
 
     Display display = getWindowManager().getDefaultDisplay();
 
@@ -112,7 +117,7 @@ public class MainActivity extends Activity
       int resForDrawBefore, int resForDrawAfter, int resForDraw,
       int currentElement)
   {
-    float oneElementWidth = (float) width / (float) elementCount;
+    int oneElementWidth = (int) ((float) width / (float) elementCount);
     Bitmap oneElementWidthBitmapBefore = Bitmap.createBitmap(
         (int) oneElementWidth, heigh, Bitmap.Config.ARGB_8888);
     Canvas oneElementWidthCanvasBefore = new Canvas(oneElementWidthBitmapBefore);
@@ -140,24 +145,26 @@ public class MainActivity extends Activity
         oneElementWidthCanvas.getHeight());
     strokeDrawable.draw(oneElementWidthCanvas);
 
-    Bitmap copy = Bitmap.createBitmap(width, heigh, Bitmap.Config.ARGB_8888);
+    Bitmap copy = Bitmap.createBitmap((oneElementWidth + 1) * elementCount,
+        heigh + 2, Bitmap.Config.ARGB_8888);
     Canvas canvas = new Canvas(copy);
 
     for (int i = 0; i != elementCount; ++i)
     {
       if (i < currentElement)
       {
-        canvas.drawBitmap(oneElementWidthBitmapBefore, oneElementWidth * i, 0,
-            null);
+        canvas.drawBitmap(oneElementWidthBitmapBefore, (oneElementWidth + 1)
+            * i, 1, null);
       }
       else if (i > currentElement)
       {
-        canvas.drawBitmap(oneElementWidthBitmapAfter, oneElementWidth * i, 0,
-            null);
+        canvas.drawBitmap(oneElementWidthBitmapAfter,
+            (oneElementWidth + 1) * i, 1, null);
       }
       else
       {
-        canvas.drawBitmap(oneElementWidthBitmap, oneElementWidth * i, 0, null);
+        canvas.drawBitmap(oneElementWidthBitmap, (oneElementWidth + 1) * i, 1,
+            null);
       }
     }
 
@@ -182,18 +189,54 @@ public class MainActivity extends Activity
         / yearCount, colomnCount, R.drawable.past_week_draw,
         R.drawable.feature_week_draw, R.drawable.week_draw, currentWeek);
 
+    LinearLayout topFrame = new LinearLayout(this);
+    topFrame.setOrientation(LinearLayout.VERTICAL);
+    float topWeigthSum = currentYear-1;
+    {
+      FrameLayout ladderFL = new FrameLayout(this);
+      LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(
+          LinearLayout.LayoutParams.MATCH_PARENT,
+          0);
+      ladderFLParams.weight = topWeigthSum;
+      topFrame.setLayoutParams(ladderFLParams);
+    }
+
+    LinearLayout middleFrame = new LinearLayout(this);
+    middleFrame.setOrientation(LinearLayout.VERTICAL);
+    float middleWeigthSum = 1;
+    {
+      FrameLayout ladderFL = new FrameLayout(this);
+      LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(
+          LinearLayout.LayoutParams.MATCH_PARENT,
+          0);
+      ladderFLParams.weight = middleWeigthSum;
+      middleFrame.setLayoutParams(ladderFLParams);
+    }
+
+    LinearLayout bottomFrame = new LinearLayout(this);
+    bottomFrame.setOrientation(LinearLayout.VERTICAL);
+    float bottomWeigthSum = yearCount-currentYear;
+    {
+      FrameLayout ladderFL = new FrameLayout(this);
+      LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(
+          LinearLayout.LayoutParams.MATCH_PARENT,
+          0);
+      ladderFLParams.weight = bottomWeigthSum;
+      bottomFrame.setLayoutParams(ladderFLParams);
+    }
+    
     for (int iYear = 0; iYear != yearCount; ++iYear)
     {
       if (iYear < currentYear)
       {
         FrameLayout ladderFL = new FrameLayout(this);
         LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 0);
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT);
         ladderFLParams.weight = 1f;
         ladderFL.setLayoutParams(ladderFLParams);
 
         ImageView imageView = new ImageView(this);
-        imageView.setAdjustViewBounds(true);
         imageView.setScaleType(ScaleType.FIT_XY);
         FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT,
@@ -202,18 +245,18 @@ public class MainActivity extends Activity
         imageView.setImageBitmap(beforeCurrentRow);
 
         ladderFL.addView(imageView);
-        mainView.addView(ladderFL);
+        topFrame.addView(ladderFL);
       }
       else if (iYear > currentYear)
       {
         FrameLayout ladderFL = new FrameLayout(this);
         LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 0);
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT);
         ladderFLParams.weight = 1f;
         ladderFL.setLayoutParams(ladderFLParams);
 
         ImageView imageView = new ImageView(this);
-        imageView.setAdjustViewBounds(true);
         imageView.setScaleType(ScaleType.FIT_XY);
         FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT,
@@ -222,18 +265,18 @@ public class MainActivity extends Activity
         imageView.setImageBitmap(afterCurrentRow);
 
         ladderFL.addView(imageView);
-        mainView.addView(ladderFL);
+        bottomFrame.addView(ladderFL);
       }
       else if (iYear == currentYear)
       {
         FrameLayout ladderFL = new FrameLayout(this);
         LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 0);
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT);
         ladderFLParams.weight = 1f;
         ladderFL.setLayoutParams(ladderFLParams);
 
         ImageView imageView = new ImageView(this);
-        imageView.setAdjustViewBounds(true);
         imageView.setScaleType(ScaleType.FIT_XY);
         FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT,
@@ -242,7 +285,7 @@ public class MainActivity extends Activity
         imageView.setImageBitmap(CurrentRow);
 
         ladderFL.addView(imageView);
-        mainView.addView(ladderFL);
+        middleFrame.addView(ladderFL);
       }
       else
       {
@@ -278,6 +321,16 @@ public class MainActivity extends Activity
         mainView.addView(ladderFL);
       }
     }
+
+    {
+      mainView.addView(topFrame);
+    }
+    {
+      mainView.addView(middleFrame);
+    }
+    {
+      mainView.addView(bottomFrame);
+    }
   }
 
   protected void invalidate()
@@ -304,6 +357,7 @@ public class MainActivity extends Activity
         (OriginalY * scaleFactor), getResources().getDisplayMetrics());
     float pixelsX = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
         (OriginalX * scaleFactor), getResources().getDisplayMetrics());
+
     android.widget.RelativeLayout.LayoutParams params = (android.widget.RelativeLayout.LayoutParams) mainView
         .getLayoutParams();
     params.height = (int) pixelsY;
@@ -317,17 +371,18 @@ public class MainActivity extends Activity
 
     params.setMargins(-1 * xOffset, -1 * yOffset, xOffset, yOffset);
     mainView.setLayoutParams(params);
+    mainView.invalidate();
     weekContainerView.setLayoutParams(params);
   }
 
   float getViewPartOffsetX()
   {
-    return ((float) currentWeek) / (float) (colomnCount-1);
+    return ((float) currentWeek) / (float) (colomnCount - 1);
   }
 
   float getViewPartOffsetY()
   {
-    return ((float) currentYear) / (float) (yearCount-1);
+    return ((float) currentYear) / (float) (yearCount - 1);
   }
 
   @Override
