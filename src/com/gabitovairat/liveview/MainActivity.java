@@ -442,11 +442,12 @@ public class MainActivity extends Activity
     return ((float) currentYear-1.f) / (float) (yearCount-1.f);
   }
   
-  
   //week inside draw
   void createDayHourElements()
   {
     int currentDay = 3;
+    int currentHour = 14;
+    
     weekLayout.setWeightSum(7);
     for (int dayI = 0; dayI != 7; ++dayI)
     {
@@ -456,30 +457,43 @@ public class MainActivity extends Activity
       ladderFLParams.weight = 1f;
       ladderFL.setLayoutParams(ladderFLParams);
 
-      LinearLayout newDay = createLinearLayout((float) colomnCount,
-          R.drawable.week_draw);
-      /*
-      for (int hourI = 0; hourI != colomnCount; ++hourI)
+      LinearLayout newDay = new LinearLayout(this);
+      newDay.setOrientation(LinearLayout.VERTICAL);
+      newDay.setBackgroundResource(R.drawable.feature_week_draw);
+      
+      newDay.setWeightSum(24);
+      
+      for (int hourI = 0; hourI != 24; ++hourI)
       {
-        int WeekDrawable = 0;
-        if (hourI < currentDay)
+        int hourDrawable = 0;
+        if (hourI < currentHour)
         {
-          WeekDrawable = R.drawable.past_week_draw;
+          hourDrawable = R.drawable.past_week_draw;
         }
-        else if (hourI > currentDay)
+        else if (hourI > currentHour)
         {
-          WeekDrawable = R.drawable.feature_week_draw;
+          hourDrawable = R.drawable.feature_week_draw;
         }
         else
         {
-          WeekDrawable = R.drawable.week_draw;
+          hourDrawable = R.drawable.week_draw;
         }
 
-        FrameLayout weekL = createLinearLayout(originalWeekWidth,
-            originalWeekHeigh, WeekDrawable);
+        FrameLayout ladderFL_ = new FrameLayout(this);
+        LinearLayout.LayoutParams ladderFLParams_ = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 0);
+        ladderFLParams_.weight = 1f;
+        ladderFL_.setLayoutParams(ladderFLParams_);
+
+        LinearLayout newHour = new LinearLayout(this);
+        newHour.setOrientation(LinearLayout.VERTICAL);
+        newHour.setBackgroundResource(hourDrawable);
+
+        ladderFL_.addView(newHour);
         
-        newRow.addView(weekL);
-      }*/
+        newDay.addView(ladderFL_);
+      }
+      
       ladderFL.addView(newDay);
       weekLayout.addView(ladderFL);
     }
