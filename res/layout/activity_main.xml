@@ -57,6 +57,14 @@
                 android:layout_weight="20"
                 android:background="@color/black_overlay" >
 
+                <LinearLayout
+                    android:id="@+id/weekLayout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="horizontal" >
+
+                </LinearLayout>
+
             </RelativeLayout>
 
         </LinearLayout>

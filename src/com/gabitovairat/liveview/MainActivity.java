@@ -53,6 +53,8 @@ public class MainActivity extends Activity
   LinearLayout                 beforeWeekConteiner;
   RelativeLayout               weekFrame;
   
+  LinearLayout                 weekLayout;
+  
   @Override
   protected void onCreate(Bundle savedInstanceState)
   {
@@ -68,6 +70,8 @@ public class MainActivity extends Activity
     
     beforeWeekConteiner = (LinearLayout) findViewById(R.id.beforeWeekConteiner);
     weekFrame = (RelativeLayout) findViewById(R.id.weekFrame);
+    
+    weekLayout = (LinearLayout) findViewById(R.id.weekLayout);
 
     Display display = getWindowManager().getDefaultDisplay();
 
@@ -77,6 +81,7 @@ public class MainActivity extends Activity
 
     createWeekElements(outMetrics.widthPixels, outMetrics.heightPixels);
     placeWeekContainer();
+    createDayHourElements();
     // setContentView(new ZoomView(this));
   }
 
@@ -435,6 +440,49 @@ public class MainActivity extends Activity
   float getViewPartOffsetY()
   {
     return ((float) currentYear-1.f) / (float) (yearCount-1.f);
+  }
+  
+  
+  //week inside draw
+  void createDayHourElements()
+  {
+    int currentDay = 3;
+    weekLayout.setWeightSum(7);
+    for (int dayI = 0; dayI != 7; ++dayI)
+    {
+      FrameLayout ladderFL = new FrameLayout(this);
+      LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(
+          0, LinearLayout.LayoutParams.MATCH_PARENT);
+      ladderFLParams.weight = 1f;
+      ladderFL.setLayoutParams(ladderFLParams);
+
+      LinearLayout newDay = createLinearLayout((float) colomnCount,
+          R.drawable.week_draw);
+      /*
+      for (int hourI = 0; hourI != colomnCount; ++hourI)
+      {
+        int WeekDrawable = 0;
+        if (hourI < currentDay)
+        {
+          WeekDrawable = R.drawable.past_week_draw;
+        }
+        else if (hourI > currentDay)
+        {
+          WeekDrawable = R.drawable.feature_week_draw;
+        }
+        else
+        {
+          WeekDrawable = R.drawable.week_draw;
+        }
+
+        FrameLayout weekL = createLinearLayout(originalWeekWidth,
+            originalWeekHeigh, WeekDrawable);
+        
+        newRow.addView(weekL);
+      }*/
+      ladderFL.addView(newDay);
+      weekLayout.addView(ladderFL);
+    }
   }
 
   @Override
