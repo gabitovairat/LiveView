@@ -463,10 +463,25 @@ public class MainActivity extends Activity
       
       newDay.setWeightSum(24);
       
+      int allHoursIs = -1;
+      if (dayI < currentDay)
+      {
+        allHoursIs = R.drawable.past_week_draw;
+      }
+      else if (dayI > currentDay)
+      {
+        allHoursIs = R.drawable.feature_week_draw;
+      }
+      
       for (int hourI = 0; hourI != 24; ++hourI)
       {
         int hourDrawable = 0;
-        if (hourI < currentHour)
+        
+        if (allHoursIs != -1)
+        {
+          hourDrawable = allHoursIs;
+        }
+        else if (hourI < currentHour)
         {
           hourDrawable = R.drawable.past_week_draw;
         }
