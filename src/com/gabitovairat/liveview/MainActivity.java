@@ -30,7 +30,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity
 {
   private static float         MIN_ZOOM    = 1.0f;
-  private static float         MAX_ZOOM    = 35f;
+  private static float         MAX_ZOOM    = 50;//35f;
   float                        OriginalX;
   float                        OriginalY;
 
@@ -42,6 +42,12 @@ public class MainActivity extends Activity
 
   int                          currentYear = 33; // already lived years
   int                          currentWeek = 4;
+  
+  int currentDay = 3;
+  int currentHour = 14;
+  
+  int currentMinute = 45;
+  int currentSecond = 35;
 
   LinearLayout                 mainView;
   RelativeLayout               hostView;
@@ -82,6 +88,7 @@ public class MainActivity extends Activity
     createWeekElements(outMetrics.widthPixels, outMetrics.heightPixels);
     placeWeekContainer();
     createDayHourElements();
+    createMinuteSecondsElements();
     // setContentView(new ZoomView(this));
   }
 
@@ -442,12 +449,12 @@ public class MainActivity extends Activity
     return ((float) currentYear-1.f) / (float) (yearCount-1.f);
   }
   
+  
+  LinearLayout currentHourLayout = null;
+  
   //week inside draw
   void createDayHourElements()
   {
-    int currentDay = 3;
-    int currentHour = 14;
-    
     weekLayout.setWeightSum(7);
     for (int dayI = 0; dayI != 7; ++dayI)
     {
@@ -459,18 +466,18 @@ public class MainActivity extends Activity
 
       LinearLayout newDay = new LinearLayout(this);
       newDay.setOrientation(LinearLayout.VERTICAL);
-      newDay.setBackgroundResource(R.drawable.feature_week_draw);
+      newDay.setBackgroundResource(R.drawable.feature_day_draw);
       
       newDay.setWeightSum(24);
       
       int allHoursIs = -1;
       if (dayI < currentDay)
       {
-        allHoursIs = R.drawable.past_week_draw;
+        allHoursIs = R.drawable.past_hour_draw;
       }
       else if (dayI > currentDay)
       {
-        allHoursIs = R.drawable.feature_week_draw;
+        allHoursIs = R.drawable.feature_hour_draw;
       }
       
       for (int hourI = 0; hourI != 24; ++hourI)
@@ -483,11 +490,123 @@ public class MainActivity extends Activity
         }
         else if (hourI < currentHour)
         {
-          hourDrawable = R.drawable.past_week_draw;
+          hourDrawable = R.drawable.past_hour_draw;
         }
         else if (hourI > currentHour)
         {
-          hourDrawable = R.drawable.feature_week_draw;
+          hourDrawable = R.drawable.feature_hour_draw;
+        }
+        else
+        {
+          hourDrawable = R.drawable.week_draw;
+        }
+
+        FrameLayout ladderFL_ = new FrameLayout(this);
+        LinearLayout.LayoutParams ladderFLParams_ = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 0);
+        ladderFLParams_.weight = 1f;
+        ladderFL_.setLayoutParams(ladderFLParams_);
+
+        LinearLayout newHour = new LinearLayout(this);
+        newHour.setOrientation(LinearLayout.HORIZONTAL);
+        newHour.setBackgroundResource(hourDrawable);
+        
+        if ((dayI == currentDay) && (hourI == currentHour))
+        {
+          currentHourLayout = newHour;
+        }
+
+        ladderFL_.addView(newHour);
+        
+        newDay.addView(ladderFL_);
+      }
+      
+      ladderFL.addView(newDay);
+      weekLayout.addView(ladderFL);
+    }
+  }
+  
+  void createMinuteSecondsElements()
+  {
+    if (currentHourLayout == null)
+    {
+      return;
+    }
+    
+    currentHourLayout.setWeightSum(60);
+    for (int munutesI = 0; munutesI != 60; ++munutesI)
+    {
+      int drawForMinutes = -1;
+      if (munutesI < currentMinute)
+      {
+        drawForMinutes = R.drawable.past_minutes_draw;
+      }
+      else if (munutesI > currentMinute)
+      {
+        drawForMinutes = R.drawable.feature_minutes_draw;
+      }
+      
+      FrameLayout ladderFL = new FrameLayout(this);
+      LinearLayout.LayoutParams ladderFLParams = new LinearLayout.LayoutParams(
+          0, LinearLayout.LayoutParams.MATCH_PARENT);
+      ladderFLParams.weight = 1f;
+      ladderFL.setLayoutParams(ladderFLParams);
+
+      LinearLayout newMinute = new LinearLayout(this);
+      newMinute.setOrientation(LinearLayout.VERTICAL);
+      newMinute.setWeightSum(60);
+      
+      if (munutesI != currentMinute)
+      {
+        newMinute.setBackgroundResource(drawForMinutes);
+      }
+      else
+      {
+        {
+          FrameLayout ladderFL_ = new FrameLayout(this);
+          LinearLayout.LayoutParams ladderFLParams_ = new LinearLayout.LayoutParams(
+              LinearLayout.LayoutParams.MATCH_PARENT, 0);
+          ladderFLParams_.weight = currentSecond;
+          ladderFL_.setLayoutParams(ladderFLParams_);
+  
+          LinearLayout secondsBefore = new LinearLayout(this);
+          secondsBefore.setOrientation(LinearLayout.VERTICAL);
+          secondsBefore.setBackgroundResource(R.drawable.minute_draw);
+          
+          ladderFL_.addView(secondsBefore);
+          newMinute.addView(ladderFL_);
+        }
+        {
+          FrameLayout ladderFL_ = new FrameLayout(this);
+          LinearLayout.LayoutParams ladderFLParams_ = new LinearLayout.LayoutParams(
+              LinearLayout.LayoutParams.MATCH_PARENT, 0);
+          ladderFLParams_.weight = 60-currentSecond;
+          ladderFL_.setLayoutParams(ladderFLParams_);
+  
+          LinearLayout secondsBefore = new LinearLayout(this);
+          secondsBefore.setOrientation(LinearLayout.VERTICAL);
+          secondsBefore.setBackgroundResource(R.drawable.feature_minutes_draw);
+  
+          ladderFL_.addView(secondsBefore); 
+          newMinute.addView(ladderFL_);
+        }
+      }
+      /*
+      for (int hourI = 0; hourI != 24; ++hourI)
+      {
+        int hourDrawable = 0;
+        
+        if (allHoursIs != -1)
+        {
+          hourDrawable = allHoursIs;
+        }
+        else if (hourI < currentHour)
+        {
+          hourDrawable = R.drawable.past_hour_draw;
+        }
+        else if (hourI > currentHour)
+        {
+          hourDrawable = R.drawable.feature_hour_draw;
         }
         else
         {
@@ -506,17 +625,22 @@ public class MainActivity extends Activity
 
         ladderFL_.addView(newHour);
         
-        newDay.addView(ladderFL_);
+        newMinute.addView(ladderFL_);
       }
+      */
       
-      ladderFL.addView(newDay);
-      weekLayout.addView(ladderFL);
+      ladderFL.addView(newMinute);
+      currentHourLayout.addView(ladderFL);
     }
+    
   }
 
   @Override
   public boolean onTouchEvent(MotionEvent event)
   {
+    //if (event.getActionMasked() == MotionEvent.ACTION_UP)
+    //{
+    //}
     detector.onTouchEvent(event);
     return true;
   }
@@ -527,10 +651,14 @@ public class MainActivity extends Activity
     @Override
     public boolean onScale(ScaleGestureDetector detector)
     {
-      scaleFactor *= detector.getScaleFactor();
-      scaleFactor = Math.max(MIN_ZOOM, Math.min(scaleFactor, MAX_ZOOM));
-      invalidate();
-      return true;
+      //if (!detector.isInProgress())
+      {
+        scaleFactor *= detector.getScaleFactor();
+        scaleFactor = Math.max(MIN_ZOOM, Math.min(scaleFactor, MAX_ZOOM));
+        invalidate();
+        return true;
+      }
+      //return true;
     }
   }
 }
